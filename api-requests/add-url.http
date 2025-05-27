@@ -1,0 +1,7 @@
+POST http://127.0.0.1:3000/users/5/url
+Content-Type: application/json
+
+{
+    "short": "wwwewe",
+    "url": "google.com"
+}
