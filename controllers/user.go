@@ -6,12 +6,12 @@ import (
 
 	"github.com/InspectorGadget/goshort/initializers"
 	"github.com/InspectorGadget/goshort/models"
+	"github.com/InspectorGadget/goshort/structs"
 	"github.com/gin-gonic/gin"
 )
 
 func AddUser(c *gin.Context) {
-	var userObject models.User
-
+	var userObject structs.AddUserRequest
 	if err := c.ShouldBindJSON(&userObject); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -23,8 +23,7 @@ func AddUser(c *gin.Context) {
 	}
 
 	// Check if a user exist with the Username
-	var existingUser models.User
-	if err := initializers.DB.Model(&models.User{}).Where("username = ?", userObject.Username).First(&existingUser).Error; err == nil {
+	if err := initializers.DB.Model(&models.User{}).Where("username = ?", &userObject.Username).First(&models.User{}).Error; err == nil {
 		c.JSON(
 			http.StatusConflict,
 			gin.H{
@@ -35,7 +34,11 @@ func AddUser(c *gin.Context) {
 	}
 
 	// Add user
-	if err := initializers.DB.Create(&userObject).Error; err != nil {
+	newUser := models.User{
+		Username: userObject.Username,
+		Password: userObject.Password,
+	}
+	if err := initializers.DB.Create(&newUser).Error; err != nil {
 		c.JSON(
 			http.StatusInternalServerError,
 			gin.H{
@@ -51,7 +54,7 @@ func AddUser(c *gin.Context) {
 		http.StatusCreated,
 		gin.H{
 			"message": "User successfully created",
-			"user":    userObject.Values(),
+			"user":    newUser.Serialize(),
 		},
 	)
 }
@@ -63,8 +66,7 @@ func ListUsers(c *gin.Context) {
 	// Create a clean response without passwords
 	var usersResponse []gin.H
 	for _, user := range users {
-		userValues := user.Values() // Use the Values method which should exclude sensitive data
-		usersResponse = append(usersResponse, userValues)
+		usersResponse = append(usersResponse, user.Serialize())
 	}
 
 	c.JSON(

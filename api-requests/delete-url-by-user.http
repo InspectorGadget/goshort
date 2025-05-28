@@ -1,0 +1,2 @@
+DELETE http://127.0.0.1:3000/protected/users/1/url/1
+Authorization: Bearer your_jwt_token_here

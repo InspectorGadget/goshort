@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/InspectorGadget/goshort/helpers"
+	"github.com/InspectorGadget/goshort/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -26,6 +27,24 @@ func ConnectToDB() error {
 	}
 
 	DB = conn
+
+	return nil
+}
+
+func Migrate() error {
+	err := DB.AutoMigrate(
+		&models.User{},
+		&models.Url{},
+		&models.Token{},
+		&models.Role{},
+		&models.RoleMap{},
+	)
+
+	if err != nil {
+		return fmt.Errorf("failed to run migrations: %w", err)
+	}
+
+	fmt.Println("Database migration completed successfully")
 
 	return nil
 }

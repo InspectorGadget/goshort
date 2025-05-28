@@ -1,4 +1,4 @@
-POST http://127.0.0.1:3000/users/5/url
+POST http://127.0.0.1:3000/protected/users/1/url
 Content-Type: application/json
 
 {

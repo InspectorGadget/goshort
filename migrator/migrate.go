@@ -15,6 +15,9 @@ func main() {
 	if err := initializers.DB.AutoMigrate(
 		&models.User{},
 		&models.Url{},
+		&models.Token{},
+		&models.Role{},
+		&models.RoleMap{},
 	); err != nil {
 		panic(err)
 	}

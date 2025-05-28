@@ -1,1 +1,2 @@
 DELETE http://127.0.0.1:3000/users/5
+Authorization: Bearer your_jwt_token_here

@@ -1,7 +1,7 @@
 # GoShort - A URL Shortening Service
 
 # Overview
-GoShort is a URL shortening service written in Go. It provides a simple API to create and manage short URLs.
+GoShort is a URL shortening service written in Go, supported by Docker Compose. It provides a simple API to create and manage short URLs.
 
 # Features
 - Create short URLs
@@ -20,20 +20,22 @@ git clone git@github.com:InspectorGadget/goshort.git
 cd goshort
 ```
 
-## Build the application (Local)
+## Build the application
 ```bash
-go mod download
-go build -o goshort ./cmd/goshort
+go build -o bin/goshort .
 ```
 
-## Run the application (Local)
+## Run Database Migrations (Locally)
 ```bash
-./goshort
+bin/goshort migrate
 ```
 
-OR
+## Run the Application (Locally)
+```bash
+bin/goshort start
+```
 
-## Run with Docker Compose (Docker)
+## Run the entire stack (MySQL + GoShort + PHPMyAdmin) using Docker
 ```bash
 docker-compose up -d
 ```

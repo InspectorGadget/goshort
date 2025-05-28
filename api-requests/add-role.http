@@ -1,0 +1,7 @@
+POST http://127.0.0.1:3000/protected/roles
+Content-Type: application/json
+Authorization: Bearer your_jwt_token_here
+
+{
+    "name": "User"
+}
